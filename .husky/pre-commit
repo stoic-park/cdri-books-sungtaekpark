@@ -1,0 +1,18 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+echo "🔍 pre-commit hook 실행 중..."
+echo "📝 스테이징된 파일에 대해 lint-staged 실행"
+
+# lint-staged 실행
+pnpm lint-staged
+
+if [ $? -eq 0 ]; then
+    echo "✅ pre-commit 검사 통과"
+else
+    echo "❌ pre-commit 검사 실패"
+    echo "💡 다음 명령어로 문제를 해결할 수 있습니다:"
+    echo "   pnpm lint:fix"
+    echo "   pnpm format"
+    exit 1
+fi

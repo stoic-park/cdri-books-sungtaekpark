@@ -1,0 +1,63 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+# 커밋 메시지 형식 검증
+# 형식: <type>(<scope>): <subject>
+# 예시: feat: 새로운 기능 추가
+# 예시: fix(api): 버그 수정
+# 예시: docs: README 업데이트
+
+# 허용되는 타입들
+valid_types="feat|fix|docs|style|refactor|test|chore"
+
+# 허용되는 스코프들 (선택사항)
+valid_scopes="api|ui|auth|db|config"
+
+# 커밋 메시지 형식 정규식
+# 1. 첫 번째 줄만 검사 (subject)
+# 2. 타입은 필수, 스코프는 선택
+# 3. subject는 50자 이내
+# 4. 첫 글자는 소문자, 마침표로 끝나지 않음
+commit_regex="^(${valid_types})(\(${valid_scopes}\))?: [a-z][^.]{1,48}$"
+
+# 커밋 메시지 파일에서 첫 번째 줄 읽기
+commit_msg=$(head -n1 "$1")
+
+# 빈 커밋 메시지 체크
+if [ -z "$commit_msg" ]; then
+    echo "❌ 커밋 메시지가 비어있습니다."
+    exit 1
+fi
+
+# 형식 검증
+if ! echo "$commit_msg" | grep -qE "$commit_regex"; then
+    echo "❌ 커밋 메시지 형식이 올바르지 않습니다."
+    echo ""
+    echo "올바른 형식: <type>(<scope>): <subject>"
+    echo ""
+    echo "허용되는 타입:"
+    echo "  feat     - 새로운 기능 추가"
+    echo "  fix      - 버그 수정"
+    echo "  docs     - 문서 수정"
+    echo "  style    - 코드 포맷팅"
+    echo "  refactor - 코드 리팩토링"
+    echo "  test     - 테스트 코드"
+    echo "  chore    - 빌드 업무 수정"
+    echo ""
+    echo "허용되는 스코프 (선택사항):"
+    echo "  api, ui, auth, db, config"
+    echo ""
+    echo "예시:"
+    echo "  feat: 검색 API 연동 및 검색어 입력 UI 구현"
+    echo "  fix(api): 무한스크롤 중복 요청 이슈 해결"
+    echo "  docs: README 초기 설정 및 커밋 컨벤션 추가"
+    echo "  style: Tailwind base 스타일 적용"
+    echo "  refactor: useBookSearch 커스텀 훅 분리"
+    echo "  test: 도서 검색 기능 테스트 코드 작성"
+    echo "  chore: pnpm 초기 설정 및 의존성 설치"
+    echo ""
+    echo "현재 커밋 메시지: $commit_msg"
+    exit 1
+fi
+
+echo "✅ 커밋 메시지 형식이 올바릅니다." 
