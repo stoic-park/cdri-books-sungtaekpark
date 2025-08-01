@@ -1,4 +1,4 @@
-# Certicos Books
+# cdri-books-sungtaekpark
 
 도서 검색 및 위시리스트 관리 애플리케이션
 
