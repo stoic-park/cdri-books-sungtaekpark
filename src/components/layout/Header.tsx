@@ -7,12 +7,12 @@ const Header = () => {
   const isWishlistActive = location.pathname === '/wishlist';
 
   return (
-    <header className="flex justify-center items-center px-6 py-4 relative">
-      <Typography variant="title1" color="black" className="absolute left-6">
+    <header className="flex justify-center items-center p-xl relative">
+      <Typography variant="title1" color="black" className="absolute left-xl">
         CERTICOS BOOKS
       </Typography>
 
-      <nav className="flex gap-8">
+      <nav className="flex gap-4 sm:gap-6 lg:gap-8">
         <Link
           to="/"
           className={isSearchActive ? 'border-b-2 border-primary pb-1' : ''}
