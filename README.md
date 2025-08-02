@@ -6,8 +6,10 @@
 
 - **Frontend**: React 19 + TypeScript
 - **Build Tool**: Vite
-- **Styling**: TailwindCSS
-- **State Management**: React Query (TanStack Query)
+- **Styling**: TailwindCSS v4
+- **State Management**:
+  - **서버 상태**: React Query (TanStack Query)
+  - **클라이언트 상태**: Zustand
 - **HTTP Client**: Axios
 - **Code Quality**: ESLint + Prettier
 - **Git Hooks**: Husky + lint-staged
@@ -138,19 +140,88 @@ chore: pnpm 초기 설정 및 의존성 설치
 src/
 ├── assets/          # 이미지, 폰트 등 정적 리소스
 ├── components/      # 재사용 가능한 공통 컴포넌트
-├── features/        # 기능별 컴포넌트 모음
-│   ├── books/       # 도서 관련 기능
-│   ├── wishlist/    # 위시리스트 기능
-│   ├── filters/     # 필터링 기능
-│   └── search/      # 검색 기능
 ├── hooks/           # 커스텀 훅
 ├── pages/           # 페이지 컴포넌트
+├── providers/       # Provider 컴포넌트
 ├── services/        # API 통신 및 외부 서비스
+├── store/           # Zustand 상태 관리
 ├── types/           # TypeScript 타입 정의
 ├── utils/           # 유틸리티 함수
 ├── App.tsx          # 메인 앱 컴포넌트
 └── main.tsx         # 앱 진입점
 ```
+
+## 상태 관리 시스템
+
+이 프로젝트는 **React Query**와 **Zustand**를 조합하여 효율적인 상태 관리를 구현했습니다.
+
+### 상태 관리 전략
+
+| 상태 유형              | 도구            | 설명                              |
+| ---------------------- | --------------- | --------------------------------- |
+| 📡 **서버 상태**       | **React Query** | API 호출, 캐싱, 동기화, 에러 처리 |
+| 🧠 **클라이언트 상태** | **Zustand**     | UI 상태, 폼 데이터, 전역 설정     |
+
+### 구체적인 상태 분류
+
+| 상태                 | 사용 도구                     | 설명                                |
+| -------------------- | ----------------------------- | ----------------------------------- |
+| **검색어 입력값**    | ✅ Zustand                    | 여러 컴포넌트에서 접근, 초기값 유지 |
+| **도서 목록 데이터** | ✅ React Query                | 서버에서 가져오는 리스트, 캐싱      |
+| **찜한 도서 리스트** | ✅ Zustand + LocalStorage     | 로컬 UI 상태, 영구 저장             |
+| **검색 중 여부**     | ✅ React Query (`isFetching`) | 내장 상태 활용                      |
+| **필터 선택값**      | ✅ Zustand                    | URL 연동 가능                       |
+
+### 사용 예시
+
+#### 검색어 상태 관리 (Zustand)
+
+```tsx
+import { useSearchStore } from '@/store';
+
+const { keyword, setKeyword } = useSearchStore();
+
+// 검색어 설정
+setKeyword('React');
+
+// 검색어 사용
+console.log(keyword); // 'React'
+```
+
+#### 도서 검색 (React Query)
+
+```tsx
+import { useSearchBooks } from '@/hooks';
+
+const { data, isLoading, error } = useSearchBooks();
+
+// 자동으로 검색어 변경 시 API 호출
+// 캐싱, 로딩 상태, 에러 처리 자동 관리
+```
+
+#### 찜한 도서 관리 (Zustand + LocalStorage)
+
+```tsx
+import { useWishlistStore } from '@/store';
+
+const { books, addBook, removeBook, isWishlisted } = useWishlistStore();
+
+// 도서 찜하기
+addBook(bookData);
+
+// 찜한 도서 확인
+const isBookWishlisted = isWishlisted(bookId);
+
+// 도서 제거
+removeBook(bookId);
+```
+
+### 장점
+
+- **성능 최적화**: React Query의 캐싱으로 불필요한 API 호출 방지
+- **개발자 경험**: React Query DevTools로 상태 디버깅 용이
+- **확장성**: 새로운 상태 추가 시 적절한 도구 선택 가능
+- **영구 저장**: LocalStorage 연동으로 찜한 도서 유지
 
 ## 환경 변수 설정
 
