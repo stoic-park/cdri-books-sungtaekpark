@@ -46,9 +46,17 @@ const BookListItemDetail = ({
           aria-label={book.isLiked ? '좋아요 취소' : '좋아요'}
         >
           {book.isLiked ? (
-            <span className="text-red-500 text-lg">❤️</span>
+            <img
+              src="src/assets/icons/heart_fill.svg"
+              alt="heart"
+              className="w-6"
+            />
           ) : (
-            <span className="text-gray-400 text-lg">🤍</span>
+            <img
+              src="src/assets/icons/heart_line.svg"
+              alt="heart"
+              className="w-6"
+            />
           )}
         </button>
       </div>
