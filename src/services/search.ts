@@ -9,6 +9,9 @@ export interface Book {
   isbn?: string;
   publisher?: string;
   publishedDate?: string;
+  price?: number;
+  originalPrice?: number;
+  isLiked?: boolean;
 }
 
 export interface SearchResponse {
@@ -165,6 +168,8 @@ export const searchBooks = async (keyword: string): Promise<SearchResponse> => {
         isbn: doc.isbn,
         publisher: doc.publisher,
         publishedDate: doc.datetime.split('T')[0], // YYYY-MM-DD 형식으로 변환
+        price: doc.sale_price,
+        originalPrice: doc.price,
       }));
 
       return {
@@ -198,6 +203,8 @@ export const searchBooks = async (keyword: string): Promise<SearchResponse> => {
       isbn: doc.isbn,
       publisher: doc.publisher,
       publishedDate: doc.datetime.split('T')[0], // YYYY-MM-DD 형식으로 변환
+      price: doc.sale_price,
+      originalPrice: doc.price,
     }));
 
     return {
@@ -230,6 +237,8 @@ export const searchBooks = async (keyword: string): Promise<SearchResponse> => {
       isbn: doc.isbn,
       publisher: doc.publisher,
       publishedDate: doc.datetime.split('T')[0],
+      price: doc.sale_price,
+      originalPrice: doc.price,
     }));
 
     return {
