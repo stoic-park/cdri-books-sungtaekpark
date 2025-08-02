@@ -92,6 +92,12 @@ const SearchBox = ({ keyword, onKeywordChange, onSearch }: SearchBoxProps) => {
               value={keyword}
               onChange={handleInputChange}
               onFocus={handleInputFocus}
+              onKeyDown={e => {
+                if (e.key === 'Enter') {
+                  e.preventDefault();
+                  handleSearch(e);
+                }
+              }}
               placeholder="검색어를 입력하세요"
               className="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-full focus:outline-none focus:border-primary focus:bg-white transition-colors"
             />

@@ -4,9 +4,20 @@ import { useSearchBooks } from '../hooks/useSearchBooks';
 import Typography from '../components/common/Typography';
 import { BookList, SearchBox } from '../features/search';
 
+// TODO: 스크롤, 데이터 페칭시 로딩 처리 필요
 const SearchBook = () => {
   const { keyword, setKeyword } = useSearchStore();
-  const { data, isLoading, error, refetch } = useSearchBooks();
+  const [searchKeyword, setSearchKeyword] = useState<string>('');
+
+  const {
+    data,
+    isLoading,
+    error,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useSearchBooks(searchKeyword);
+
   const [likedBooks, setLikedBooks] = useState<Set<string>>(new Set());
 
   const handleLikeToggle = (bookId: string) => {
@@ -21,16 +32,21 @@ const SearchBook = () => {
     });
   };
 
-  // 좋아요 상태가 포함된 도서 데이터 생성
-  const booksWithLikeStatus =
-    data?.books.map(book => ({
-      ...book,
-      isLiked: likedBooks.has(book.id),
-    })) || [];
+  // 모든 페이지의 도서 데이터를 평면화하고 좋아요 상태 추가
+  const allBooks = data?.pages.flatMap(page => page.books) || [];
+  const booksWithLikeStatus = allBooks.map(book => ({
+    ...book,
+    isLiked: likedBooks.has(book.id),
+  }));
+
+  // 전체 결과 수 계산
+  const totalResults = data?.pages[0]?.total || 0;
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    refetch();
+    if (keyword.trim()) {
+      setSearchKeyword(keyword);
+    }
   };
 
   return (
@@ -50,9 +66,11 @@ const SearchBook = () => {
         {/* 검색 결과 */}
         <BookList
           books={booksWithLikeStatus}
-          total={data?.total || 0}
-          isLoading={isLoading}
+          total={totalResults}
+          isLoading={isLoading || isFetchingNextPage}
           error={error}
+          hasMore={hasNextPage || false}
+          onLoadMore={fetchNextPage}
           onLikeToggle={handleLikeToggle}
           onViewDetail={bookId => {
             // TODO: 상세보기 로직 구현

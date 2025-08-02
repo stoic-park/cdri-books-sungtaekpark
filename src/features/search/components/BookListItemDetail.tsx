@@ -24,6 +24,9 @@ const BookListItemDetail = ({
   };
 
   const handlePurchase = () => {
+    if (book.url) {
+      window.open(book.url, '_blank', 'noopener,noreferrer');
+    }
     onPurchase?.(book.id);
   };
 
@@ -157,7 +160,13 @@ const BookListItemDetail = ({
           {/* 구매하기 버튼 (하단) */}
           <button
             onClick={handlePurchase}
-            className="w-[240px] px-md py-lg bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm"
+            disabled={!book.url}
+            className={`w-[240px] px-md py-lg rounded-lg transition-colors text-sm ${
+              book.url
+                ? 'bg-blue-600 text-white hover:bg-blue-700'
+                : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+            }`}
+            aria-label={book.url ? `${book.title} 구매하기` : '구매 링크 없음'}
           >
             구매하기
           </button>

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import Typography from '../../../components/common/Typography';
 import BookListItem from './BookListItem';
 import BookListItemDetail from './BookListItemDetail';
+import { useInfiniteScroll } from '../../../hooks/useInfiniteScroll';
 
 import type { Book } from '../../../services/search';
 
@@ -10,6 +11,8 @@ interface BookListProps {
   total: number;
   isLoading?: boolean;
   error?: Error | null;
+  hasMore?: boolean;
+  onLoadMore?: () => void;
   onLikeToggle?: (bookId: string) => void;
   onViewDetail?: (bookId: string) => void;
   onPurchase?: (bookId: string) => void;
@@ -20,11 +23,19 @@ const BookList = ({
   total,
   isLoading,
   error,
+  hasMore = false,
+  onLoadMore,
   onLikeToggle,
   onViewDetail,
   onPurchase,
 }: BookListProps) => {
   const [expandedBookId, setExpandedBookId] = useState<string | null>(null);
+
+  const loadingRef = useInfiniteScroll({
+    onLoadMore: onLoadMore || (() => {}),
+    hasMore,
+    isLoading: isLoading || false,
+  });
 
   const handleViewDetail = (bookId: string) => {
     if (expandedBookId === bookId) {
@@ -110,6 +121,28 @@ const BookList = ({
           );
         })}
       </div>
+
+      {/* 무한 스크롤 로딩 인디케이터 */}
+      {hasMore && (
+        <div ref={loadingRef} className="py-4 text-center">
+          {isLoading ? (
+            <Typography variant="body2" color="text-secondary">
+              더 많은 도서를 불러오는 중...
+            </Typography>
+          ) : (
+            <div className="h-4" />
+          )}
+        </div>
+      )}
+
+      {/* 더 이상 로드할 데이터가 없을 때 */}
+      {!hasMore && books.length > 0 && (
+        <div className="py-4 text-center">
+          <Typography variant="body2" color="text-secondary">
+            모든 도서를 불러왔습니다.
+          </Typography>
+        </div>
+      )}
     </div>
   );
 };

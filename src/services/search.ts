@@ -12,6 +12,7 @@ export interface Book {
   price?: number;
   originalPrice?: number;
   isLiked?: boolean;
+  url?: string;
 }
 
 export interface SearchResponse {
@@ -130,7 +131,10 @@ const mockKakaoResponse: KakaoBookResponse = {
   },
 };
 
-export const searchBooks = async (keyword: string): Promise<SearchResponse> => {
+export const searchBooks = async (
+  keyword: string,
+  page: number = 1
+): Promise<SearchResponse> => {
   if (!keyword.trim()) {
     return {
       books: [],
@@ -170,12 +174,18 @@ export const searchBooks = async (keyword: string): Promise<SearchResponse> => {
         publishedDate: doc.datetime.split('T')[0], // YYYY-MM-DD 형식으로 변환
         price: doc.sale_price,
         originalPrice: doc.price,
+        url: doc.url,
       }));
 
+      // 페이지네이션 적용
+      const startIndex = (page - 1) * 10;
+      const endIndex = startIndex + 10;
+      const paginatedBooks = books.slice(startIndex, endIndex);
+
       return {
-        books,
-        total: filteredDocuments.length,
-        page: 1,
+        books: paginatedBooks,
+        total: books.length,
+        page,
         limit: 10,
       };
     }
@@ -205,6 +215,7 @@ export const searchBooks = async (keyword: string): Promise<SearchResponse> => {
       publishedDate: doc.datetime.split('T')[0], // YYYY-MM-DD 형식으로 변환
       price: doc.sale_price,
       originalPrice: doc.price,
+      url: doc.url,
     }));
 
     return {
@@ -239,6 +250,7 @@ export const searchBooks = async (keyword: string): Promise<SearchResponse> => {
       publishedDate: doc.datetime.split('T')[0],
       price: doc.sale_price,
       originalPrice: doc.price,
+      url: doc.url,
     }));
 
     return {
