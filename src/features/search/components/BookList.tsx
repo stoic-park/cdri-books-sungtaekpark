@@ -98,7 +98,7 @@ const BookList = ({
       </div>
 
       {/* 도서 목록 */}
-      <div className="space-y-4">
+      <div>
         {books.map(book => {
           const isExpanded = expandedBookId === book.id;
 
@@ -123,6 +123,7 @@ const BookList = ({
       </div>
 
       {/* 무한 스크롤 로딩 인디케이터 */}
+      {/* TODO: 컴포넌트 분리 */}
       {hasMore && (
         <div ref={loadingRef} className="py-4 text-center">
           {isLoading ? (

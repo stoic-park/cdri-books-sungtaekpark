@@ -1,14 +1,22 @@
 import { useState, useRef, useEffect } from 'react';
 import { useSearchHistory } from '../../../hooks/useSearchHistory';
+import type { SearchCondition } from '../../../types/search';
 import SearchHistory from './SearchHistory';
+import AdvancedSearch from './AdvancedSearch';
 
 interface SearchBoxProps {
   keyword: string;
   onKeywordChange: (keyword: string) => void;
   onSearch: (e: React.FormEvent) => void;
+  onAdvancedSearch: (conditions: SearchCondition[]) => void;
 }
 
-const SearchBox = ({ keyword, onKeywordChange, onSearch }: SearchBoxProps) => {
+const SearchBox = ({
+  keyword,
+  onKeywordChange,
+  onSearch,
+  onAdvancedSearch,
+}: SearchBoxProps) => {
   const {
     searchHistory,
     addToSearchHistory,
@@ -16,6 +24,7 @@ const SearchBox = ({ keyword, onKeywordChange, onSearch }: SearchBoxProps) => {
     clearSearchHistory,
   } = useSearchHistory();
   const [isHistoryVisible, setIsHistoryVisible] = useState(false);
+  const [isAdvancedSearchOpen, setIsAdvancedSearchOpen] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -71,6 +80,20 @@ const SearchBox = ({ keyword, onKeywordChange, onSearch }: SearchBoxProps) => {
     clearSearchHistory();
     setIsHistoryVisible(false);
   };
+
+  const handleAdvancedSearchClick = () => {
+    setIsAdvancedSearchOpen(true);
+  };
+
+  const handleAdvancedSearchClose = () => {
+    setIsAdvancedSearchOpen(false);
+  };
+
+  const handleAdvancedSearch = (conditions: SearchCondition[]) => {
+    onAdvancedSearch(conditions);
+    setIsAdvancedSearchOpen(false);
+  };
+
   return (
     <div ref={containerRef} className="relative w-full">
       <form
@@ -103,7 +126,8 @@ const SearchBox = ({ keyword, onKeywordChange, onSearch }: SearchBoxProps) => {
             />
           </div>
           <button
-            type="submit"
+            type="button"
+            onClick={handleAdvancedSearchClick}
             className="px-6 py-3 bg-gray-100 text-gray-600 rounded-lg hover:bg-gray-200 transition-colors border border-gray-300"
           >
             상세검색
@@ -117,6 +141,12 @@ const SearchBox = ({ keyword, onKeywordChange, onSearch }: SearchBoxProps) => {
         onRemoveHistory={handleHistoryRemove}
         onClearHistory={handleClearHistory}
         isVisible={isHistoryVisible}
+      />
+
+      <AdvancedSearch
+        isOpen={isAdvancedSearchOpen}
+        onClose={handleAdvancedSearchClose}
+        onSearch={handleAdvancedSearch}
       />
     </div>
   );
