@@ -68,7 +68,7 @@ const AdvancedSearch = ({ isOpen, onClose, onSearch }: AdvancedSearchProps) => {
   return (
     <div
       ref={modalRef}
-      className="absolute top-full right-0 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg z-10 p-2"
+      className="absolute top-full right-0 mt-2 bg-white border border-border rounded-lg shadow-lg z-10 p-2"
     >
       {/* 헤더 */}
       <div className="flex items-center justify-end w-full">
@@ -76,7 +76,7 @@ const AdvancedSearch = ({ isOpen, onClose, onSearch }: AdvancedSearchProps) => {
           type="button"
           variant="ghost"
           onClick={handleClose}
-          className="p-2 text-gray-400 hover:text-gray-600"
+          className="p-2 text-text-secondary hover:text-secondary"
           aria-label="상세검색 닫기"
         >
           <img

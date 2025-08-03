@@ -1,56 +1,28 @@
-# cdri-books-sungtaekpark
+# 📚 Certicos Books - 도서 검색 및 위시리스트 애플리케이션
 
-도서 검색 및 위시리스트 관리 애플리케이션
+## 프로젝트 개요
 
-## 기술 스택
+CERTICOS BOOKS는 도서 검색 및 상세 정보 제공, 구매링크 이동, 내가 찜한 책 정보를 확인할 수 있는 서비스입니다.
 
-- **Frontend**: React 19 + TypeScript
-- **Build Tool**: Vite
-- **Styling**: TailwindCSS v4
-- **State Management**:
-  - **서버 상태**: React Query (TanStack Query)
-  - **클라이언트 상태**: Zustand
-- **HTTP Client**: Axios
-- **Code Quality**: ESLint + Prettier
-- **Git Hooks**: Husky + lint-staged
-- **Deployment**: Vercel
+---
 
-## 설치 및 실행
+## 실행 방법 및 환경 설정
 
 ### 필수 요구사항
 
 - Node.js 18.0.0 이상
-- pnpm 8.0.0 이상
+- pnpm (권장) 또는 npm
 
-### 설치
+### 설치 및 실행
 
 ```bash
+
 # 의존성 설치
 pnpm install
-```
 
-### Git 설정 (최초 1회)
-
-```bash
-# Git 설정 스크립트 실행
-./setup-git.sh
-
-# 또는 수동 설정
-git config commit.template .gitmessage
-git config user.name "Your Name"
-git config user.email "your.email@example.com"
-```
-
-### 개발 서버 실행
-
-```bash
-# 개발 서버 시작
+# 개발 서버 실행
 pnpm dev
-```
 
-### 빌드
-
-```bash
 # 프로덕션 빌드
 pnpm build
 
@@ -58,220 +30,112 @@ pnpm build
 pnpm preview
 ```
 
-## 개발 도구
+### 환경 변수 설정
 
-### 코드 포맷팅
+`.env` 파일을 생성하고 다음 변수를 설정하세요:
 
-```bash
-# Prettier로 코드 포맷팅
-pnpm format
-
-# 포맷팅 검사
-pnpm format:check
+```env
+VITE_KAKAO_API_KEY=your_kakao_api_key_here
 ```
 
-### 린팅
+---
 
-```bash
-# ESLint 검사
-pnpm lint
+## 폴더 구조 및 주요 코드 설명
 
-# ESLint 자동 수정
-pnpm lint:fix
-```
-
-### Git Hooks
-
-이 프로젝트는 Husky를 사용하여 Git hooks를 설정했습니다:
-
-- **pre-commit**: 커밋 전 자동으로 lint-staged 실행
-  - 스테이징된 파일들에 대해 ESLint와 Prettier 자동 적용
-  - 코드 품질 검사 및 자동 수정
-
-- **commit-msg**: 커밋 메시지 형식 검증
-  - Conventional Commits 규칙 강제
-  - 타입, 스코프, 제목 형식 검증
-  - 50자 이내 제목 길이 제한
-
-```bash
-# Git hooks 활성화 (Git 설치 후)
-pnpm prepare
-```
-
-#### 커밋 메시지 템플릿
-
-`git commit` 명령어 실행 시 자동으로 커밋 메시지 가이드라인이 표시됩니다.
-
-#### 커밋 메시지 형식
-
-```
-<type>(<scope>): <subject>
-```
-
-**허용되는 타입:**
-
-- `feat`: 새로운 기능 추가
-- `fix`: 버그 수정
-- `docs`: 문서 수정
-- `style`: 코드 포맷팅
-- `refactor`: 코드 리팩토링
-- `test`: 테스트 코드
-- `chore`: 빌드 업무 수정
-
-**허용되는 스코프 (선택사항):**
-
-- `api`, `ui`, `auth`, `db`, `config`
-
-**예시:**
-
-```bash
-feat: 검색 API 연동 및 검색어 입력 UI 구현
-fix(api): 무한스크롤 중복 요청 이슈 해결
-docs: README 초기 설정 및 커밋 컨벤션 추가
-style: Tailwind base 스타일 적용
-refactor: useBookSearch 커스텀 훅 분리
-test: 도서 검색 기능 테스트 코드 작성
-chore: pnpm 초기 설정 및 의존성 설치
-```
-
-## 프로젝트 구조
+- **FSD(Feature-Sliced Design)**의 레이어 구조(app, pages, widgets, features, entities, shared)보다는 간소화된 구조로 프로젝트에 적응했습니다.
+- `src/features/`에 비즈니스 로직별 기능을 분리하고, `src/shared/`에 공통 모듈을 배치하여 관심사 분리 했습니다.
 
 ```
 src/
-├── assets/          # 이미지, 폰트 등 정적 리소스
-├── components/      # 재사용 가능한 공통 컴포넌트
-├── hooks/           # 커스텀 훅
-├── pages/           # 페이지 컴포넌트
-├── providers/       # Provider 컴포넌트
-├── services/        # API 통신 및 외부 서비스
-├── store/           # Zustand 상태 관리
-├── types/           # TypeScript 타입 정의
-├── utils/           # 유틸리티 함수
-├── App.tsx          # 메인 앱 컴포넌트
-└── main.tsx         # 앱 진입점
+├── app/                    # 애플리케이션 진입점
+├── assets/                 # 정적 리소스 (이미지, 아이콘)
+├── features/               # 기능별 컴포넌트
+│   └── search/            # 도서 검색 기능
+│       ├── BookItem.tsx           # 개별 도서 아이템 (아코디언)
+│       ├── BookListItem.tsx       # 도서 목록 아이템 (축약형)
+│       ├── BookListItemDetail.tsx # 도서 상세 아이템 (확장형)
+│       ├── BookList.tsx           # 도서 목록 컨테이너
+│       ├── SearchBox.tsx          # 검색 입력 컴포넌트
+│       ├── AdvancedSearch.tsx     # 상세 검색 모달
+│       ├── SearchCondition.tsx    # 검색 조건 컴포넌트
+│       ├── SearchHistory.tsx      # 검색 기록 드롭다운
+│       └── index.ts               # 기능 내보내기
+├── pages/                  # 페이지 컴포넌트
+│   ├── SearchPage/        # 도서 검색 페이지
+│   └── WishlistPage/      # 위시리스트 페이지
+├── shared/                 # 공통 모듈
+│   ├── components/        # 공통 UI 컴포넌트
+│   │   ├── Typography.tsx     # 타이포그래피 컴포넌트
+│   │   ├── Button.tsx         # 버튼 컴포넌트
+│   │   ├── SearchCountText.tsx # 검색 결과 개수 표시
+│   │   └── index.ts           # 컴포넌트 내보내기
+│   ├── hooks/             # 커스텀 훅
+│   │   ├── useSearchBooks.ts        # 도서 검색 훅
+│   │   ├── useAdvancedSearchBooks.ts # 상세 검색 훅
+│   │   ├── useWishlist.ts           # 위시리스트 관리 훅
+│   │   ├── useSearchHistory.ts      # 검색 기록 관리 훅
+│   │   ├── useInfiniteScroll.ts     # 무한 스크롤 훅
+│   │   ├── useSearchMode.ts         # 검색 모드 관리 훅
+│   │   ├── useClickOutside.ts       # 외부 클릭 감지 훅
+│   │   ├── useBookList.ts           # 도서 목록 처리 훅
+│   │   └── index.ts                 # 훅 내보내기
+│   ├── store/             # 상태 관리
+│   │   ├── useSearchStore.ts        # 검색 상태 관리
+│   │   ├── useWishlistStore.ts      # 위시리스트 상태 관리
+│   │   └── index.ts                 # 스토어 내보내기
+│   ├── types/             # TypeScript 타입 정의
+│   │   └── search.ts               # 검색 관련 타입
+│   └── utils/             # 유틸리티 함수
+│       └── search.ts               # 검색 API 및 유틸리티
+└── index.css              # 전역 스타일
 ```
 
-## 상태 관리 시스템
+---
 
-이 프로젝트는 **React Query**와 **Zustand**를 조합하여 효율적인 상태 관리를 구현했습니다.
+## 라이브러리 선택 이유
 
-### 상태 관리 전략
+### Frontend
 
-| 상태 유형              | 도구            | 설명                              |
-| ---------------------- | --------------- | --------------------------------- |
-| 📡 **서버 상태**       | **React Query** | API 호출, 캐싱, 동기화, 에러 처리 |
-| 🧠 **클라이언트 상태** | **Zustand**     | UI 상태, 폼 데이터, 전역 설정     |
+- **React 19.1.0** - 최신 React 버전
+- **TypeScript 5.8.3** - 타입 안전성
+- **TailwindCSS 4.1.11** - 유틸리티 기반 CSS 프레임워크
+- **Vite 7.0.4** - 빠른 개발 서버 및 빌드 도구
 
-### 구체적인 상태 분류
+### 상태 관리 & 데이터 페칭
 
-| 상태                 | 사용 도구                     | 설명                                |
-| -------------------- | ----------------------------- | ----------------------------------- |
-| **검색어 입력값**    | ✅ Zustand                    | 여러 컴포넌트에서 접근, 초기값 유지 |
-| **도서 목록 데이터** | ✅ React Query                | 서버에서 가져오는 리스트, 캐싱      |
-| **찜한 도서 리스트** | ✅ Zustand + LocalStorage     | 로컬 UI 상태, 영구 저장             |
-| **검색 중 여부**     | ✅ React Query (`isFetching`) | 내장 상태 활용                      |
-| **필터 선택값**      | ✅ Zustand                    | URL 연동 가능                       |
+- **Zustand 5.0.7** - 경량 상태 관리
+- **TanStack Query 5.84.0** - 서버 상태 관리 및 캐싱
+- **Axios 1.11.0** - HTTP 클라이언트
 
-### 사용 예시
+### 라우팅
 
-#### 검색어 상태 관리 (Zustand)
+- **React Router DOM 7.7.1** - 클라이언트 사이드 라우팅
 
-```tsx
-import { useSearchStore } from '@/store';
+### 개발 도구
 
-const { keyword, setKeyword } = useSearchStore();
+- **ESLint 9.30.1** - 코드 품질 관리
+- **Prettier 3.6.2** - 코드 포맷팅
+- **Husky 9.1.7** - Git 훅 관리
+- **lint-staged 16.1.2** - 스테이징된 파일만 린트
 
-// 검색어 설정
-setKeyword('React');
+---
 
-// 검색어 사용
-console.log(keyword); // 'React'
-```
+## 강조하고 싶은 기능
 
-#### 도서 검색 (React Query)
+### 도서 검색
 
-```tsx
-import { useSearchBooks } from '@/hooks';
+- **일반 검색**: 키워드 기반 도서 검색 (Enter 키로 검색 실행)
+- **상세 검색**: 제목, 저자명, 출판사별 조건 검색
+- **검색 기록**: 최대 8개까지 검색 기록 저장 및 브라우저 재시작 후에도 유지
+- **무한 스크롤**: 페이지당 10개 결과, 무한 스크롤로 추가 로딩
 
-const { data, isLoading, error } = useSearchBooks();
+### 위시리스트
 
-// 자동으로 검색어 변경 시 API 호출
-// 캐싱, 로딩 상태, 에러 처리 자동 관리
-```
+- **찜하기 기능**: 도서 찜하기/취소하기
+- **위시리스트 페이지**: 찜한 도서 목록 관리
+- **로컬 스토리지**: 브라우저 재시작 후에도 찜한 도서 유지
 
-#### 찜한 도서 관리 (Zustand + LocalStorage)
+### 사용자 인터페이스
 
-```tsx
-import { useWishlistStore } from '@/store';
-
-const { books, addBook, removeBook, isWishlisted } = useWishlistStore();
-
-// 도서 찜하기
-addBook(bookData);
-
-// 찜한 도서 확인
-const isBookWishlisted = isWishlisted(bookId);
-
-// 도서 제거
-removeBook(bookId);
-```
-
-### 장점
-
-- **성능 최적화**: React Query의 캐싱으로 불필요한 API 호출 방지
-- **개발자 경험**: React Query DevTools로 상태 디버깅 용이
-- **확장성**: 새로운 상태 추가 시 적절한 도구 선택 가능
-- **영구 저장**: LocalStorage 연동으로 찜한 도서 유지
-
-## 환경 변수 설정
-
-프로젝트 루트에 `.env` 파일을 생성하고 다음 변수들을 설정하세요:
-
-```bash
-# API Configuration
-VITE_API_BASE_URL=http://localhost:3000/api
-
-# Google Books API (예시)
-VITE_GOOGLE_BOOKS_API_KEY=your_google_books_api_key_here
-
-# App Configuration
-VITE_APP_NAME=Certicos Books
-VITE_APP_VERSION=1.0.0
-
-# Development Configuration
-VITE_DEV_MODE=true
-VITE_ENABLE_LOGGING=true
-```
-
-## 커밋 규칙
-
-이 프로젝트는 아래 커밋 스타일을 사용합니다.
-
-### 커밋 타입
-
-- `feat`: 새로운 기능 추가
-- `fix`: 버그 수정
-- `docs`: 문서 수정
-- `style`: 코드 포맷팅
-- `refactor`: 코드 리팩토링
-- `test`: 테스트 코드
-- `chore`: 빌드 업무 수정
-
-### 예시
-
-```bash
-feat: 검색 API 연동 및 검색어 입력 UI 구현
-fix: 무한스크롤 중복 요청 이슈 해결
-docs: README 초기 설정 및 커밋 컨벤션 추가
-```
-
-## 배포
-
-이 프로젝트는 Vercel을 통해 자동 배포됩니다.
-
-### 배포 설정
-
-- **Framework**: Vite
-- **Build Command**: `pnpm build`
-- **Output Directory**: `dist`
-- **Install Command**: `pnpm install`
+- **아코디언 패턴**: 도서 상세 정보 확장/축소
+- **반응형 디자인**: 모바일 및 데스크톱 최적화

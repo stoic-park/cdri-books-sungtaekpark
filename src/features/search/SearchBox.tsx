@@ -1,5 +1,5 @@
-import { useState, useRef, useEffect } from 'react';
-import { useSearchHistory } from '../../shared/hooks/useSearchHistory';
+import { useState, useRef } from 'react';
+import { useSearchHistory, useClickOutside } from '../../shared/hooks';
 import { Button } from '../../shared/components';
 import type { SearchCondition } from '../../shared/types/search';
 import SearchHistory from './SearchHistory';
@@ -29,19 +29,7 @@ const SearchBox = ({
   const inputRef = useRef<HTMLInputElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        containerRef.current &&
-        !containerRef.current.contains(event.target as Node)
-      ) {
-        setIsHistoryVisible(false);
-      }
-    };
-
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
+  useClickOutside(containerRef, () => setIsHistoryVisible(false));
 
   const handleInputFocus = () => {
     if (searchHistory.length > 0) {
@@ -103,7 +91,7 @@ const SearchBox = ({
       >
         <div className="flex flex-col sm:flex-row gap-4 w-full">
           <div className="flex-1 relative">
-            <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+            <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-text-secondary">
               <img
                 src="src/assets/icons/search_icon.svg"
                 alt="search"
@@ -123,7 +111,7 @@ const SearchBox = ({
                 }
               }}
               placeholder="검색어를 입력하세요"
-              className="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-full focus:outline-none focus:border-primary focus:bg-white transition-colors"
+              className="w-full pl-10 pr-4 py-3 bg-bg-secondary border border-border rounded-full focus:outline-none focus:border-primary focus:bg-white transition-colors"
             />
           </div>
           <Button

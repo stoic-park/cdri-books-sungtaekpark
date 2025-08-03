@@ -50,13 +50,13 @@ const SearchConditionComponent = ({
 
         {/* 드롭다운 메뉴 */}
         {isDropdownOpen && (
-          <div className="absolute top-full left-0 mt-1 w-[120px] bg-white border border-gray-200 rounded-lg shadow-lg z-10">
+          <div className="absolute top-full left-0 mt-1 w-[120px] bg-white border border-border rounded-lg shadow-lg z-10">
             {SEARCH_FIELD_OPTIONS.map(option => (
               <button
                 key={option.value}
                 type="button"
                 onClick={() => handleFieldChange(option.value)}
-                className="w-full px-3 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 first:rounded-t-lg last:rounded-b-lg truncate"
+                className="w-full px-3 py-2 text-left text-sm text-text-primary hover:bg-bg-secondary first:rounded-t-lg last:rounded-b-lg truncate"
               >
                 {option.label}
               </button>
@@ -71,7 +71,7 @@ const SearchConditionComponent = ({
         value={condition.value}
         onChange={e => handleValueChange(e.target.value)}
         placeholder="검색어 입력"
-        className="flex-1 px-3 py-3 border border-gray-200 rounded-lg focus:outline-none focus:border-blue-500"
+        className="flex-1 px-3 py-3 border border-border rounded-lg focus:outline-none focus:border-primary"
       />
     </div>
   );

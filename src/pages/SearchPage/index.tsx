@@ -1,9 +1,11 @@
-import { useState, useCallback, useMemo, memo } from 'react';
+import { useState, useCallback, memo } from 'react';
 import { useSearchStore } from '../../shared/store/useSearchStore';
 import {
   useSearchBooks,
   useAdvancedSearchBooks,
   useWishlist,
+  useSearchMode,
+  useBookList,
 } from '../../shared/hooks';
 import type { SearchCondition } from '../../shared/types/search';
 import type { Book } from '../../shared/utils/search';
@@ -35,46 +37,35 @@ const SearchBook = () => {
 
   const { toggleLike, isLiked } = useWishlist();
 
-  const handleLikeToggle = useCallback(
-    (book: Book) => {
-      toggleLike(book);
+  // 검색 모드 관리
+  const {
+    currentData,
+    currentError,
+    currentFetchNextPage,
+    currentHasNextPage,
+    currentIsFetchingNextPage,
+  } = useSearchMode(
+    {
+      data: searchData,
+      error: searchError,
+      fetchNextPage: fetchNextSearchPage,
+      hasNextPage: hasNextSearchPage,
+      isFetchingNextPage: isFetchingNextSearchPage,
     },
-    [toggleLike]
+    {
+      data: advancedSearchData,
+      error: advancedSearchError,
+      fetchNextPage: fetchNextAdvancedSearchPage,
+      hasNextPage: hasNextAdvancedSearchPage,
+      isFetchingNextPage: isFetchingNextAdvancedSearchPage,
+    },
+    advancedSearchConditions
   );
 
-  // 현재 활성화된 검색 모드에 따라 데이터 선택
-  const isAdvancedSearchMode = advancedSearchConditions.length > 0;
-  const currentData = isAdvancedSearchMode ? advancedSearchData : searchData;
-
-  const currentError = isAdvancedSearchMode ? advancedSearchError : searchError;
-  const currentFetchNextPage = isAdvancedSearchMode
-    ? fetchNextAdvancedSearchPage
-    : fetchNextSearchPage;
-  const currentHasNextPage = isAdvancedSearchMode
-    ? hasNextAdvancedSearchPage
-    : hasNextSearchPage;
-  const currentIsFetchingNextPage = isAdvancedSearchMode
-    ? isFetchingNextAdvancedSearchPage
-    : isFetchingNextSearchPage;
-
-  const allBooks = useMemo(
-    () => currentData?.pages.flatMap(page => page.books) || [],
-    [currentData?.pages]
-  );
-
-  const booksWithLikeStatus = useMemo(
-    () =>
-      allBooks.map(book => ({
-        ...book,
-        isLiked: isLiked(book.id),
-      })),
-    [allBooks, isLiked]
-  );
-
-  // 전체 결과 수 계산
-  const totalResults = useMemo(
-    () => currentData?.pages[0]?.total || 0,
-    [currentData?.pages]
+  // 책 목록 데이터 처리
+  const { allBooks, booksWithLikeStatus, totalResults } = useBookList(
+    currentData,
+    isLiked
   );
 
   const handleSearch = useCallback(
@@ -125,12 +116,12 @@ const SearchBook = () => {
           onLoadMore={currentFetchNextPage}
           onLikeToggle={useCallback(
             (bookId: string) => {
-              const book = allBooks.find(b => b.id === bookId);
+              const book = allBooks.find((b: Book) => b.id === bookId);
               if (book) {
-                handleLikeToggle(book);
+                toggleLike(book);
               }
             },
-            [allBooks, handleLikeToggle]
+            [allBooks, toggleLike]
           )}
         />
       </div>

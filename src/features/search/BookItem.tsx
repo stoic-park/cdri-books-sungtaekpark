@@ -18,14 +18,13 @@ const BookItem = ({
   onPurchase,
 }: BookItemProps) => {
   const [isExpanded, setIsExpanded] = useState(false);
-
   const handleViewDetail = useCallback(() => {
     setIsExpanded(prev => !prev);
     onViewDetail?.(book.id);
   }, [book.id, onViewDetail]);
 
   return (
-    <div className="border-b border-gray-200">
+    <div className="border-b border-border">
       <div className="transition-all duration-500 ease-in-out transform">
         {isExpanded ? (
           <div className="animate-in slide-in-from-top-2 duration-300">

@@ -29,10 +29,10 @@ const BookListItem = ({
       window.open(book.url, '_blank', 'noopener,noreferrer');
     }
     onPurchase?.(book.id);
-  }, [book.url, book.id, onPurchase]);
+  }, [book, onPurchase]);
 
   return (
-    <div className="flex items-center gap-6 p-6 border-b border-gray-200 hover:bg-gray-50 transition-colors">
+    <div className="flex items-center gap-6 p-6 border-b border-border hover:bg-bg-secondary transition-colors">
       {/* 도서 이미지 및 좋아요 버튼 */}
       <div className="relative">
         <img

@@ -29,7 +29,7 @@ const BookListItemDetail = ({
       window.open(book.url, '_blank', 'noopener,noreferrer');
     }
     onPurchase?.(book.id);
-  }, [book.url, book.id, onPurchase]);
+  }, [book, onPurchase]);
 
   const hasDiscount = useMemo(
     () => book.originalPrice && book.price && book.originalPrice > book.price,
@@ -37,7 +37,7 @@ const BookListItemDetail = ({
   );
 
   return (
-    <div className="flex gap-6 p-6 border-b border-gray-200 hover:bg-gray-50 transition-colors">
+    <div className="flex gap-6 p-6 border-b border-border hover:bg-bg-secondary transition-colors">
       {/* 도서 이미지 및 좋아요 버튼 */}
       <div className="relative">
         <img
@@ -145,7 +145,7 @@ const BookListItemDetail = ({
                     할인가
                   </Typography>
                   <Typography
-                    variant="title3"
+                    variant="body1"
                     color="black"
                     className="font-bold"
                   >

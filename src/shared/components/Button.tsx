@@ -29,10 +29,12 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       'inline-flex items-center justify-center gap-2 rounded-lg font-medium transition-colors focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed';
 
     const variantClasses = {
-      primary: 'bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-500',
-      secondary: 'bg-gray-100 text-gray-600 hover:bg-gray-200',
-      outline: 'border border-gray-300 bg-white text-gray-700 hover:bg-gray-50',
-      ghost: 'text-gray-600 hover:bg-gray-100',
+      primary:
+        'bg-primary text-white hover:bg-primary/90 focus:ring-primary/50',
+      secondary: 'bg-light-gray text-secondary hover:bg-gray',
+      outline:
+        'border border-border bg-white text-text-primary hover:bg-bg-secondary',
+      ghost: 'text-secondary hover:bg-light-gray',
     };
 
     const sizeClasses = {

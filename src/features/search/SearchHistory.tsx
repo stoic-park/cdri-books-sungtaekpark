@@ -20,7 +20,7 @@ const SearchHistory = ({
   }
 
   return (
-    <div className="absolute top-full left-0 right-0 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg z-10">
+    <div className="absolute top-full left-0 right-0 mt-2 bg-white border border-border rounded-lg shadow-lg z-10">
       <div className="p-4">
         <div className="flex items-center justify-between mb-3">
           <Typography
@@ -32,7 +32,7 @@ const SearchHistory = ({
           </Typography>
           <button
             onClick={onClearHistory}
-            className="text-sm text-gray-500 hover:text-gray-700 transition-colors"
+            className="text-sm text-text-secondary hover:text-text-primary transition-colors"
           >
             전체 삭제
           </button>
@@ -42,17 +42,17 @@ const SearchHistory = ({
           {searchHistory.map((keyword, index) => (
             <div
               key={`${keyword}-${index}`}
-              className="flex items-center justify-between p-2 hover:bg-gray-50 rounded transition-colors"
+              className="flex items-center justify-between p-2 hover:bg-bg-secondary rounded transition-colors"
             >
               <button
                 onClick={() => onSelectHistory(keyword)}
-                className="flex-1 text-left text-sm text-gray-700 hover:text-gray-900 transition-colors"
+                className="flex-1 text-left text-sm text-text-primary hover:text-black transition-colors"
               >
                 {keyword}
               </button>
               <button
                 onClick={() => onRemoveHistory(keyword)}
-                className="ml-2 p-1 text-gray-400 hover:text-gray-600 transition-colors"
+                className="ml-2 p-1 text-text-secondary hover:text-secondary transition-colors"
                 aria-label={`${keyword} 검색 기록 삭제`}
               >
                 <img
