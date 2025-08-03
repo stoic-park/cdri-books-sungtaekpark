@@ -1,7 +1,6 @@
-import { useState } from 'react';
+import { memo } from 'react';
 import Typography from '../../shared/components/Typography';
-import BookListItem from './BookListItem';
-import BookListItemDetail from './BookListItemDetail';
+import BookItem from './BookItem';
 import { useInfiniteScroll } from '../../shared/hooks/useInfiniteScroll';
 
 import type { Book } from '../../shared/utils/search';
@@ -27,23 +26,12 @@ const BookList = ({
   onViewDetail,
   onPurchase,
 }: BookListProps) => {
-  const [expandedBookId, setExpandedBookId] = useState<string | null>(null);
-
   const loadingRef = useInfiniteScroll({
     onLoadMore: onLoadMore || (() => {}),
     hasMore,
     isLoading: isLoading || false,
     threshold: 300, // 더 일찍 로드 시작하여 부드러운 경험
   });
-
-  const handleViewDetail = (bookId: string) => {
-    if (expandedBookId === bookId) {
-      setExpandedBookId(null); // 접기
-    } else {
-      setExpandedBookId(bookId); // 펼치기
-    }
-    onViewDetail?.(bookId);
-  };
   if (isLoading) {
     return (
       <div className="text-center py-8">
@@ -88,27 +76,15 @@ const BookList = ({
     <div className="w-full">
       {/* 도서 목록 */}
       <div>
-        {books.map(book => {
-          const isExpanded = expandedBookId === book.id;
-
-          return isExpanded ? (
-            <BookListItemDetail
-              key={book.id}
-              book={book}
-              onLikeToggle={onLikeToggle}
-              onViewDetail={handleViewDetail}
-              onPurchase={onPurchase}
-            />
-          ) : (
-            <BookListItem
-              key={book.id}
-              book={book}
-              onLikeToggle={onLikeToggle}
-              onViewDetail={handleViewDetail}
-              onPurchase={onPurchase}
-            />
-          );
-        })}
+        {books.map(book => (
+          <BookItem
+            key={book.id}
+            book={book}
+            onLikeToggle={onLikeToggle}
+            onViewDetail={onViewDetail}
+            onPurchase={onPurchase}
+          />
+        ))}
       </div>
 
       {/* 무한 스크롤 로딩 인디케이터 */}
@@ -136,4 +112,4 @@ const BookList = ({
   );
 };
 
-export default BookList;
+export default memo(BookList);

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import clsx from 'clsx';
 
 type TypographyVariant =
@@ -83,4 +83,4 @@ const Typography: React.FC<TypographyProps> = ({
   );
 };
 
-export default Typography;
+export default memo(Typography);

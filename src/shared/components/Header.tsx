@@ -1,10 +1,17 @@
+import { memo, useMemo } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import Typography from './Typography';
 
 const Header = () => {
   const location = useLocation();
-  const isSearchActive = location.pathname === '/';
-  const isWishlistActive = location.pathname === '/wishlist';
+  const isSearchActive = useMemo(
+    () => location.pathname === '/',
+    [location.pathname]
+  );
+  const isWishlistActive = useMemo(
+    () => location.pathname === '/wishlist',
+    [location.pathname]
+  );
 
   return (
     <header className="flex justify-center items-center p-xl relative">
@@ -43,4 +50,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default memo(Header);

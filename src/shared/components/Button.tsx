@@ -1,4 +1,4 @@
-import { forwardRef } from 'react';
+import { forwardRef, memo } from 'react';
 import Typography from './Typography';
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
@@ -30,17 +30,15 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
 
     const variantClasses = {
       primary: 'bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-500',
-      secondary:
-        'bg-gray-100 text-gray-600 hover:bg-gray-200 focus:ring-gray-500',
-      outline:
-        'border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 focus:ring-gray-500',
-      ghost: 'text-gray-600 hover:bg-gray-100 focus:ring-gray-500',
+      secondary: 'bg-gray-100 text-gray-600 hover:bg-gray-200',
+      outline: 'border border-gray-300 bg-white text-gray-700 hover:bg-gray-50',
+      ghost: 'text-gray-600 hover:bg-gray-100',
     };
 
     const sizeClasses = {
-      sm: 'px-3 py-2 text-sm',
-      md: 'px-4 py-2 text-sm',
-      lg: 'px-6 py-3 text-base',
+      sm: 'px-3 py-4 text-sm',
+      md: 'px-4 py-4 text-sm',
+      lg: 'px-6 py-4 text-base',
     };
 
     const widthClasses = fullWidth ? 'w-full' : '';
@@ -81,4 +79,4 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
 
 Button.displayName = 'Button';
 
-export default Button;
+export default memo(Button);

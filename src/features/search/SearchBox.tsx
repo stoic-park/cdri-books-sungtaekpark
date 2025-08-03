@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { useSearchHistory } from '../../shared/hooks/useSearchHistory';
+import { Button } from '../../shared/components';
 import type { SearchCondition } from '../../shared/types/search';
 import SearchHistory from './SearchHistory';
 import AdvancedSearch from './AdvancedSearch';
@@ -125,13 +126,13 @@ const SearchBox = ({
               className="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-full focus:outline-none focus:border-primary focus:bg-white transition-colors"
             />
           </div>
-          <button
+          <Button
             type="button"
+            variant="outline"
             onClick={handleAdvancedSearchClick}
-            className="px-6 py-3 bg-gray-100 text-gray-600 rounded-lg hover:bg-gray-200 transition-colors border border-gray-300"
           >
             상세검색
-          </button>
+          </Button>
         </div>
       </form>
 

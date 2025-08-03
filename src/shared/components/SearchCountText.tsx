@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import Typography from './Typography';
 
 interface SearchCountTextProps {
@@ -26,4 +27,4 @@ const SearchCountText = ({ total, label }: SearchCountTextProps) => {
   );
 };
 
-export default SearchCountText;
+export default memo(SearchCountText);

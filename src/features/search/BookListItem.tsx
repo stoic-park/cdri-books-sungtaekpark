@@ -1,3 +1,4 @@
+import { memo, useCallback } from 'react';
 import { Typography, Button } from '../../shared/components';
 
 import type { Book } from '../../shared/utils/search';
@@ -15,20 +16,20 @@ const BookListItem = ({
   onViewDetail,
   onPurchase,
 }: BookListItemProps) => {
-  const handleLikeToggle = () => {
+  const handleLikeToggle = useCallback(() => {
     onLikeToggle?.(book.id);
-  };
+  }, [book.id, onLikeToggle]);
 
-  const handleViewDetail = () => {
+  const handleViewDetail = useCallback(() => {
     onViewDetail?.(book.id);
-  };
+  }, [book.id, onViewDetail]);
 
-  const handlePurchase = () => {
+  const handlePurchase = useCallback(() => {
     if (book.url) {
       window.open(book.url, '_blank', 'noopener,noreferrer');
     }
     onPurchase?.(book.id);
-  };
+  }, [book.url, book.id, onPurchase]);
 
   return (
     <div className="flex items-center gap-6 p-6 border-b border-gray-200 hover:bg-gray-50 transition-colors">
@@ -98,7 +99,7 @@ const BookListItem = ({
           variant="secondary"
           onClick={handleViewDetail}
           rightIcon={
-            <img src="src/assets/icons/arrow_up_icon.svg" alt="arrow-up" />
+            <img src="src/assets/icons/arrow_down_icon.svg" alt="arrow-down" />
           }
           size="lg"
         >
@@ -109,4 +110,4 @@ const BookListItem = ({
   );
 };
 
-export default BookListItem;
+export default memo(BookListItem);

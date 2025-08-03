@@ -1,3 +1,4 @@
+import { memo, useCallback, useMemo } from 'react';
 import { Typography, Button } from '../../shared/components';
 
 import type { Book } from '../../shared/utils/search';
@@ -15,23 +16,25 @@ const BookListItemDetail = ({
   onViewDetail,
   onPurchase,
 }: BookListItemDetailProps) => {
-  const handleLikeToggle = () => {
+  const handleLikeToggle = useCallback(() => {
     onLikeToggle?.(book.id);
-  };
+  }, [book.id, onLikeToggle]);
 
-  const handleViewDetail = () => {
+  const handleViewDetail = useCallback(() => {
     onViewDetail?.(book.id);
-  };
+  }, [book.id, onViewDetail]);
 
-  const handlePurchase = () => {
+  const handlePurchase = useCallback(() => {
     if (book.url) {
       window.open(book.url, '_blank', 'noopener,noreferrer');
     }
     onPurchase?.(book.id);
-  };
+  }, [book.url, book.id, onPurchase]);
 
-  const hasDiscount =
-    book.originalPrice && book.price && book.originalPrice > book.price;
+  const hasDiscount = useMemo(
+    () => book.originalPrice && book.price && book.originalPrice > book.price,
+    [book.originalPrice, book.price]
+  );
 
   return (
     <div className="flex gap-6 p-6 border-b border-gray-200 hover:bg-gray-50 transition-colors">
@@ -106,7 +109,7 @@ const BookListItemDetail = ({
       </div>
 
       {/* 오른쪽 영역: 상세보기 버튼, 가격 정보, 구매하기 버튼 */}
-      <div className="flex flex-col items-end gap-sm justify-between py-2">
+      <div className="flex flex-col items-end gap-sm justify-between py-1.5">
         {/* 상세보기 버튼 (상단) */}
         <Button
           variant="secondary"
@@ -175,4 +178,4 @@ const BookListItemDetail = ({
   );
 };
 
-export default BookListItemDetail;
+export default memo(BookListItemDetail);
