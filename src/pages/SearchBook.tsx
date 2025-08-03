@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { useSearchStore } from '../store/useSearchStore';
-import { useSearchBooks, useAdvancedSearchBooks } from '../hooks';
+import { useSearchBooks, useAdvancedSearchBooks, useWishlist } from '../hooks';
 import type { SearchCondition } from '../types/search';
-import Typography from '../components/common/Typography';
+import type { Book } from '../services/search';
 import { BookList, SearchBox } from '../features/search';
+import { SearchCountText, Typography } from '../components/common';
 
 const SearchBook = () => {
   const { keyword, setKeyword } = useSearchStore();
@@ -30,18 +31,10 @@ const SearchBook = () => {
     isFetchingNextPage: isFetchingNextAdvancedSearchPage,
   } = useAdvancedSearchBooks(advancedSearchConditions);
 
-  const [likedBooks, setLikedBooks] = useState<Set<string>>(new Set());
+  const { toggleLike, isLiked } = useWishlist();
 
-  const handleLikeToggle = (bookId: string) => {
-    setLikedBooks(prev => {
-      const newSet = new Set(prev);
-      if (newSet.has(bookId)) {
-        newSet.delete(bookId);
-      } else {
-        newSet.add(bookId);
-      }
-      return newSet;
-    });
+  const handleLikeToggle = (book: Book) => {
+    toggleLike(book);
   };
 
   // 현재 활성화된 검색 모드에 따라 데이터 선택
@@ -65,7 +58,7 @@ const SearchBook = () => {
   const allBooks = currentData?.pages.flatMap(page => page.books) || [];
   const booksWithLikeStatus = allBooks.map(book => ({
     ...book,
-    isLiked: likedBooks.has(book.id),
+    isLiked: isLiked(book.id),
   }));
 
   // 전체 결과 수 계산
@@ -104,15 +97,22 @@ const SearchBook = () => {
           onAdvancedSearch={handleAdvancedSearch}
         />
 
+        {/* 검색 결과 개수 */}
+        <SearchCountText label="도서 검색 결과" total={totalResults} />
+
         {/* 검색 결과 */}
         <BookList
           books={booksWithLikeStatus}
-          total={totalResults}
           isLoading={currentIsLoading || currentIsFetchingNextPage}
           error={currentError}
           hasMore={currentHasNextPage || false}
           onLoadMore={currentFetchNextPage}
-          onLikeToggle={handleLikeToggle}
+          onLikeToggle={bookId => {
+            const book = allBooks.find(b => b.id === bookId);
+            if (book) {
+              handleLikeToggle(book);
+            }
+          }}
           onViewDetail={bookId => {
             // TODO: 상세보기 로직 구현
             console.log('상세보기:', bookId);

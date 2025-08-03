@@ -8,7 +8,6 @@ import type { Book } from '../../../services/search';
 
 interface BookListProps {
   books: Book[];
-  total: number;
   isLoading?: boolean;
   error?: Error | null;
   hasMore?: boolean;
@@ -20,7 +19,6 @@ interface BookListProps {
 
 const BookList = ({
   books,
-  total,
   isLoading,
   error,
   hasMore = false,
@@ -87,16 +85,6 @@ const BookList = ({
 
   return (
     <div className="w-full">
-      {/* 검색 결과 헤더 */}
-      <div className="flex gap-4 mb-6">
-        <Typography variant="body1" color="text-secondary">
-          도서 검색 결과
-        </Typography>
-        <Typography variant="body1" color="text-secondary">
-          총 {total}건
-        </Typography>
-      </div>
-
       {/* 도서 목록 */}
       <div>
         {books.map(book => {
