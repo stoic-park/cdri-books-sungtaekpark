@@ -1,10 +1,10 @@
 import { useState } from 'react';
-import Typography from '../../../components/common/Typography';
+import Typography from '../../shared/components/Typography';
 import BookListItem from './BookListItem';
 import BookListItemDetail from './BookListItemDetail';
-import { useInfiniteScroll } from '../../../hooks/useInfiniteScroll';
+import { useInfiniteScroll } from '../../shared/hooks/useInfiniteScroll';
 
-import type { Book } from '../../../services/search';
+import type { Book } from '../../shared/utils/search';
 
 interface BookListProps {
   books: Book[];

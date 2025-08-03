@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
-import Typography from '../common/Typography';
+import Typography from './Typography';
 
 const Header = () => {
   const location = useLocation();

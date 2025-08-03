@@ -1,4 +1,4 @@
-import Typography from '../../../components/common/Typography';
+import Typography from '../../shared/components/Typography';
 
 interface SearchHistoryProps {
   searchHistory: string[];

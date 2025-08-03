@@ -1,8 +1,8 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { QueryProvider } from './providers/QueryProvider';
-import Layout from './components/layout/Layout';
-import SearchBook from './pages/SearchBook';
-import WishList from './pages/WishList';
+import Layout from '../shared/components/Layout';
+import SearchBook from '../pages/SearchPage';
+import WishList from '../pages/WishlistPage';
 
 const App = () => {
   return (

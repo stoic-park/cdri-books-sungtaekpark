@@ -1,6 +1,6 @@
-import Typography from '../../../components/common/Typography';
+import Typography from '../../shared/components/Typography';
 
-import type { Book } from '../../../services/search';
+import type { Book } from '../../shared/utils/search';
 
 interface BookListItemProps {
   book: Book;

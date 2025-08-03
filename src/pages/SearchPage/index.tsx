@@ -1,10 +1,14 @@
 import { useState } from 'react';
-import { useSearchStore } from '../store/useSearchStore';
-import { useSearchBooks, useAdvancedSearchBooks, useWishlist } from '../hooks';
-import type { SearchCondition } from '../types/search';
-import type { Book } from '../services/search';
-import { BookList, SearchBox } from '../features/search';
-import { SearchCountText, Typography } from '../components/common';
+import { useSearchStore } from '../../shared/store/useSearchStore';
+import {
+  useSearchBooks,
+  useAdvancedSearchBooks,
+  useWishlist,
+} from '../../shared/hooks';
+import type { SearchCondition } from '../../shared/types/search';
+import type { Book } from '../../shared/utils/search';
+import { BookList, SearchBox } from '../../features/search';
+import { SearchCountText, Typography } from '../../shared/components';
 
 const SearchBook = () => {
   const { keyword, setKeyword } = useSearchStore();

@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import type { SearchCondition } from '../../../types/search';
-import { SEARCH_FIELD_OPTIONS } from '../../../types/search';
+import type { SearchCondition } from '../../shared/types/search';
+import { SEARCH_FIELD_OPTIONS } from '../../shared/types/search';
 
 interface SearchConditionProps {
   condition: SearchCondition;

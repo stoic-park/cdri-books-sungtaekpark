@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
-import { useSearchHistory } from '../../../hooks/useSearchHistory';
-import type { SearchCondition } from '../../../types/search';
+import { useSearchHistory } from '../../shared/hooks/useSearchHistory';
+import type { SearchCondition } from '../../shared/types/search';
 import SearchHistory from './SearchHistory';
 import AdvancedSearch from './AdvancedSearch';
 

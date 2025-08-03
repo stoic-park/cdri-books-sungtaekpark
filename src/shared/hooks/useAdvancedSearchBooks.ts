@@ -1,5 +1,5 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
-import { advancedSearchBooks } from '../services/search';
+import { advancedSearchBooks } from '../utils/search';
 import type { SearchCondition } from '../types/search';
 
 export const useAdvancedSearchBooks = (conditions: SearchCondition[]) => {

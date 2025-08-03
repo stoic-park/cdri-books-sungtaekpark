@@ -1,5 +1,5 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
-import { searchBooks } from '../services/search';
+import { searchBooks } from '../utils/search';
 
 export const useSearchBooks = (searchKeyword?: string) => {
   return useInfiniteQuery({

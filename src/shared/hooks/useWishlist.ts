@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import type { Book } from '../services/search';
+import type { Book } from '../utils/search';
 
 const WISHLIST_STORAGE_KEY = 'likedBooks';
 

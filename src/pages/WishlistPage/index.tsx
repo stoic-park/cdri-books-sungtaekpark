@@ -1,6 +1,6 @@
-import { SearchCountText, Typography } from '../components/common';
-import { useWishlist } from '../hooks';
-import { BookList } from '../features/search';
+import { SearchCountText, Typography } from '../../shared/components';
+import { useWishlist } from '../../shared/hooks';
+import { BookList } from '../../features/search';
 
 const WishList = () => {
   const { likedBooks, isLoading, removeFromWishlist } = useWishlist();
@@ -21,7 +21,7 @@ const WishList = () => {
       {/* 찜한 책 개수 */}
       <SearchCountText total={likedBooks.length} label="찜한 책" />
 
-      {/* 검색 결과 */}
+      {/* 찜한 책 목록 */}
       <BookList
         books={likedBooks}
         isLoading={isLoading}

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import type { SearchCondition } from '../../../types/search';
+import type { SearchCondition } from '../../shared/types/search';
 import SearchConditionComponent from './SearchCondition';
 
 interface AdvancedSearchProps {
