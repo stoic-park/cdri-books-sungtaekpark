@@ -7,7 +7,6 @@ interface SearchConditionProps {
   onConditionChange: (condition: SearchCondition) => void;
 }
 
-// TODO: SearchCondition type과 컴포넌트 이름이 겹쳤네
 const SearchConditionComponent = ({
   condition,
   onConditionChange,

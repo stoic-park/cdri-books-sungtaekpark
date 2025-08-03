@@ -47,88 +47,77 @@ interface KakaoBookResponse {
 }
 
 // 실제 카카오 API 응답을 시뮬레이션하는 목업 데이터
+const generateMockBooks = (): KakaoBookResponse['documents'] => {
+  const books = [];
+  const titles = [
+    'React 완전 가이드',
+    'TypeScript 핵심 가이드',
+    'Next.js 실전 프로젝트',
+    'JavaScript ES6+ 완벽 가이드',
+    'Vue.js 3 마스터',
+    'Node.js 백엔드 개발',
+    'Python 데이터 분석',
+    'Java 스프링 부트',
+    'Go 언어 프로그래밍',
+    'Docker 컨테이너 기술',
+  ];
+
+  const authors = [
+    '김철수',
+    '이영희',
+    '박민수',
+    '최지원',
+    '정수민',
+    '한소희',
+    '강동원',
+    '윤서연',
+    '임태현',
+    '송미라',
+  ];
+
+  const publishers = [
+    '테크북스',
+    '코딩북스',
+    '웹북스',
+    '프론트북스',
+    '뷰북스',
+    '백엔드북스',
+    '데이터북스',
+    '자바북스',
+    '고북스',
+    '도커북스',
+  ];
+
+  for (let i = 0; i < 50; i++) {
+    const titleIndex = i % titles.length;
+    const authorIndex = i % authors.length;
+    const publisherIndex = i % publishers.length;
+
+    books.push({
+      authors: [authors[authorIndex]],
+      contents: `${titles[titleIndex]}에 대한 상세한 내용입니다. 이 책은 ${authors[authorIndex]}가 집필한 ${publishers[publisherIndex]}의 대표작입니다.`,
+      datetime: `2024-${String(Math.floor(i / 12) + 1).padStart(2, '0')}-${String((i % 12) + 1).padStart(2, '0')}T00:00:00.000+09:00`,
+      isbn: `978-${String(i + 1).padStart(10, '0')}`,
+      price: 20000 + i * 1000,
+      publisher: publishers[publisherIndex],
+      sale_price: 18000 + i * 900,
+      status: '정상판매',
+      thumbnail: `https://via.placeholder.com/150x200/cccccc/666666?text=Book${i + 1}`,
+      title: `${titles[titleIndex]} ${i + 1}`,
+      translators: [],
+      url: `https://example.com/book${i + 1}`,
+    });
+  }
+
+  return books;
+};
+
 const mockKakaoResponse: KakaoBookResponse = {
-  documents: [
-    {
-      authors: ['김철수'],
-      contents:
-        'React의 모든 것을 배우는 완벽한 가이드. 컴포넌트 기반 개발부터 상태 관리, 라우팅까지 React의 핵심 개념을 체계적으로 학습할 수 있습니다.',
-      datetime: '2024-01-01T00:00:00.000+09:00',
-      isbn: '978-1234567890',
-      price: 25000,
-      publisher: '테크북스',
-      sale_price: 22500,
-      status: '정상판매',
-      thumbnail: 'https://via.placeholder.com/150x200',
-      title: 'React 완전 가이드',
-      translators: [],
-      url: 'https://example.com/book1',
-    },
-    {
-      authors: ['이영희'],
-      contents:
-        'TypeScript의 핵심 개념을 쉽게 배우기. 타입 시스템부터 제네릭, 인터페이스까지 TypeScript의 모든 기능을 실습을 통해 익힐 수 있습니다.',
-      datetime: '2024-02-01T00:00:00.000+09:00',
-      isbn: '978-0987654321',
-      price: 28000,
-      publisher: '코딩북스',
-      sale_price: 25200,
-      status: '정상판매',
-      thumbnail: 'https://via.placeholder.com/150x200',
-      title: 'TypeScript 핵심 가이드',
-      translators: [],
-      url: 'https://example.com/book2',
-    },
-    {
-      authors: ['박민수'],
-      contents:
-        'Next.js로 실제 프로젝트를 만들어보자. SSR, SSG, API Routes 등 Next.js의 강력한 기능들을 활용한 실전 프로젝트 개발 방법을 다룹니다.',
-      datetime: '2024-03-01T00:00:00.000+09:00',
-      isbn: '978-1122334455',
-      price: 30000,
-      publisher: '웹북스',
-      sale_price: 27000,
-      status: '정상판매',
-      thumbnail: 'https://via.placeholder.com/150x200',
-      title: 'Next.js 실전 프로젝트',
-      translators: [],
-      url: 'https://example.com/book3',
-    },
-    {
-      authors: ['최지원'],
-      contents:
-        'ES6부터 최신 JavaScript 문법까지 완벽하게 정리. 화살표 함수, 클래스, 모듈, 비동기 처리 등 현대 JavaScript의 모든 기능을 배워보세요.',
-      datetime: '2024-04-01T00:00:00.000+09:00',
-      isbn: '978-5566778899',
-      price: 22000,
-      publisher: '프론트북스',
-      sale_price: 19800,
-      status: '정상판매',
-      thumbnail: 'https://via.placeholder.com/150x200',
-      title: 'JavaScript ES6+ 완벽 가이드',
-      translators: [],
-      url: 'https://example.com/book4',
-    },
-    {
-      authors: ['정수민'],
-      contents:
-        'Vue.js 3의 Composition API와 새로운 기능들을 활용한 현대적인 웹 개발. 반응형 시스템부터 상태 관리까지 Vue.js의 모든 것을 배워보세요.',
-      datetime: '2024-05-01T00:00:00.000+09:00',
-      isbn: '978-9988776655',
-      price: 26000,
-      publisher: '뷰북스',
-      sale_price: 23400,
-      status: '정상판매',
-      thumbnail: 'https://via.placeholder.com/150x200',
-      title: 'Vue.js 3 마스터',
-      translators: [],
-      url: 'https://example.com/book5',
-    },
-  ],
+  documents: generateMockBooks(),
   meta: {
     is_end: false,
-    pageable_count: 5,
-    total_count: 5,
+    pageable_count: 50,
+    total_count: 50,
   },
 };
 
@@ -178,7 +167,7 @@ export const searchBooks = async (
         url: doc.url,
       }));
 
-      // 페이지네이션 적용
+      // 페이지네이션 적용 - 전체 필터링된 데이터에서 해당 페이지만 추출
       const startIndex = (page - 1) * 10;
       const endIndex = startIndex + 10;
       const paginatedBooks = books.slice(startIndex, endIndex);
@@ -197,7 +186,7 @@ export const searchBooks = async (
         params: {
           query: keyword,
           size: 10,
-          page: 1,
+          page: page, // 페이지 파라미터 동적 적용
         },
         headers: {
           Authorization: `KakaoAK ${KAKAO_API_KEY}`,
@@ -222,7 +211,7 @@ export const searchBooks = async (
     return {
       books,
       total: response.data.meta.total_count,
-      page: 1,
+      page: page, // 실제 페이지 번호 반환
       limit: 10,
     };
   } catch (error) {
@@ -257,7 +246,7 @@ export const searchBooks = async (
     return {
       books,
       total: filteredDocuments.length,
-      page: 1,
+      page: page, // 실제 페이지 번호 반환
       limit: 10,
     };
   }
@@ -321,7 +310,7 @@ export const advancedSearchBooks = async (
         url: doc.url,
       }));
 
-      // 페이지네이션 적용
+      // 페이지네이션 적용 - 전체 필터링된 데이터에서 해당 페이지만 추출
       const startIndex = (page - 1) * 10;
       const endIndex = startIndex + 10;
       const paginatedBooks = books.slice(startIndex, endIndex);
@@ -436,7 +425,7 @@ export const advancedSearchBooks = async (
       url: doc.url,
     }));
 
-    // 페이지네이션 적용
+    // 페이지네이션 적용 - 전체 필터링된 데이터에서 해당 페이지만 추출
     const startIndex = (page - 1) * 10;
     const endIndex = startIndex + 10;
     const paginatedBooks = books.slice(startIndex, endIndex);

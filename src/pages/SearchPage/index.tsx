@@ -19,7 +19,6 @@ const SearchBook = () => {
 
   const {
     data: searchData,
-    isLoading: isSearchLoading,
     error: searchError,
     fetchNextPage: fetchNextSearchPage,
     hasNextPage: hasNextSearchPage,
@@ -28,7 +27,6 @@ const SearchBook = () => {
 
   const {
     data: advancedSearchData,
-    isLoading: isAdvancedSearchLoading,
     error: advancedSearchError,
     fetchNextPage: fetchNextAdvancedSearchPage,
     hasNextPage: hasNextAdvancedSearchPage,
@@ -44,9 +42,7 @@ const SearchBook = () => {
   // 현재 활성화된 검색 모드에 따라 데이터 선택
   const isAdvancedSearchMode = advancedSearchConditions.length > 0;
   const currentData = isAdvancedSearchMode ? advancedSearchData : searchData;
-  const currentIsLoading = isAdvancedSearchMode
-    ? isAdvancedSearchLoading
-    : isSearchLoading;
+
   const currentError = isAdvancedSearchMode ? advancedSearchError : searchError;
   const currentFetchNextPage = isAdvancedSearchMode
     ? fetchNextAdvancedSearchPage
@@ -72,7 +68,6 @@ const SearchBook = () => {
     e.preventDefault();
     if (keyword.trim()) {
       setSearchKeyword(keyword);
-      // 전체 검색 시 상세검색 조건 초기화
       setAdvancedSearchConditions([]);
     }
   };
@@ -82,8 +77,6 @@ const SearchBook = () => {
     // 상세검색 시 전체 검색어 초기화
     setKeyword('');
     setSearchKeyword('');
-    // TODO: 상세검색 API 호출 로직 구현
-    console.log('상세검색 조건:', conditions);
   };
 
   return (
@@ -107,7 +100,7 @@ const SearchBook = () => {
         {/* 검색 결과 */}
         <BookList
           books={booksWithLikeStatus}
-          isLoading={currentIsLoading || currentIsFetchingNextPage}
+          isLoading={currentIsFetchingNextPage} // 다음 페이지 로딩 중일 때만
           error={currentError}
           hasMore={currentHasNextPage || false}
           onLoadMore={currentFetchNextPage}
@@ -116,14 +109,6 @@ const SearchBook = () => {
             if (book) {
               handleLikeToggle(book);
             }
-          }}
-          onViewDetail={bookId => {
-            // TODO: 상세보기 로직 구현
-            console.log('상세보기:', bookId);
-          }}
-          onPurchase={bookId => {
-            // TODO: 구매하기 로직 구현
-            console.log('구매하기:', bookId);
           }}
         />
       </div>

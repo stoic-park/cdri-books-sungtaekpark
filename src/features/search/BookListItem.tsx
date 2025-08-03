@@ -1,4 +1,4 @@
-import Typography from '../../shared/components/Typography';
+import { Typography, Button } from '../../shared/components';
 
 import type { Book } from '../../shared/utils/search';
 
@@ -85,27 +85,25 @@ const BookListItem = ({
 
       {/* 액션 버튼들 */}
       <div className="flex gap-2">
-        <button
+        <Button
+          variant={book.url ? 'primary' : 'secondary'}
           onClick={handlePurchase}
           disabled={!book.url}
-          className={`px-md py-lg rounded-lg transition-colors text-sm ${
-            book.url
-              ? 'bg-blue-600 text-white hover:bg-blue-700'
-              : 'bg-gray-300 text-gray-500 cursor-not-allowed'
-          }`}
           aria-label={book.url ? `${book.title} 구매하기` : '구매 링크 없음'}
+          size="lg"
         >
           구매하기
-        </button>
-        <button
+        </Button>
+        <Button
+          variant="secondary"
           onClick={handleViewDetail}
-          className="flex items-center gap-sm px-md py-lg bg-gray-100 text-gray-600 rounded-lg hover:bg-gray-200 transition-colors text-sm"
+          rightIcon={
+            <img src="src/assets/icons/arrow_up_icon.svg" alt="arrow-up" />
+          }
+          size="lg"
         >
-          <Typography variant="body1" color="text-secondary">
-            상세보기
-          </Typography>
-          <img src="src/assets/icons/arrow_up_icon.svg" alt="arrow-up" />
-        </button>
+          상세보기
+        </Button>
       </div>
     </div>
   );

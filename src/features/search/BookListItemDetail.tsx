@@ -1,4 +1,4 @@
-import Typography from '../../shared/components/Typography';
+import { Typography, Button } from '../../shared/components';
 
 import type { Book } from '../../shared/utils/search';
 
@@ -106,19 +106,20 @@ const BookListItemDetail = ({
       </div>
 
       {/* 오른쪽 영역: 상세보기 버튼, 가격 정보, 구매하기 버튼 */}
-      <div className="flex flex-col items-end gap-sm justify-between w-[240px]">
+      <div className="flex flex-col items-end gap-sm justify-between py-2">
         {/* 상세보기 버튼 (상단) */}
-        <button
+        <Button
+          variant="secondary"
           onClick={handleViewDetail}
-          className="flex items-center gap-sm px-md py-lg bg-gray-100 text-gray-600 rounded-lg hover:bg-gray-200 transition-colors text-sm"
+          rightIcon={
+            <img src="src/assets/icons/arrow_up_icon.svg" alt="arrow-up" />
+          }
+          size="lg"
         >
-          <Typography variant="body1" color="text-secondary">
-            상세보기
-          </Typography>
-          <img src="src/assets/icons/arrow_down_icon.svg" alt="arrow-down" />
-        </button>
+          상세보기
+        </Button>
 
-        <div className="flex flex-col gap-lg">
+        <div className="flex flex-col gap-lg w-full">
           {/* 가격 정보 */}
           <div className="text-right">
             {hasDiscount ? (
@@ -158,18 +159,16 @@ const BookListItemDetail = ({
           </div>
 
           {/* 구매하기 버튼 (하단) */}
-          <button
+          <Button
+            variant={book.url ? 'primary' : 'secondary'}
             onClick={handlePurchase}
             disabled={!book.url}
-            className={`w-[240px] px-md py-lg rounded-lg transition-colors text-sm ${
-              book.url
-                ? 'bg-blue-600 text-white hover:bg-blue-700'
-                : 'bg-gray-300 text-gray-500 cursor-not-allowed'
-            }`}
+            fullWidth
             aria-label={book.url ? `${book.title} 구매하기` : '구매 링크 없음'}
+            size="lg"
           >
             구매하기
-          </button>
+          </Button>
         </div>
       </div>
     </div>

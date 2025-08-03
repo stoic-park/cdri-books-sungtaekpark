@@ -33,6 +33,7 @@ const BookList = ({
     onLoadMore: onLoadMore || (() => {}),
     hasMore,
     isLoading: isLoading || false,
+    threshold: 300, // 더 일찍 로드 시작하여 부드러운 경험
   });
 
   const handleViewDetail = (bookId: string) => {
@@ -111,7 +112,6 @@ const BookList = ({
       </div>
 
       {/* 무한 스크롤 로딩 인디케이터 */}
-      {/* TODO: 컴포넌트 분리 */}
       {hasMore && (
         <div ref={loadingRef} className="py-4 text-center">
           {isLoading ? (
