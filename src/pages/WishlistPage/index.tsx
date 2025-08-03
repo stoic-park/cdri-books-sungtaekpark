@@ -1,3 +1,4 @@
+import { useCallback, memo } from 'react';
 import { SearchCountText, Typography } from '../../shared/components';
 import { useWishlist } from '../../shared/hooks';
 import { BookList } from '../../features/search';
@@ -5,9 +6,12 @@ import { BookList } from '../../features/search';
 const WishList = () => {
   const { likedBooks, isLoading, removeFromWishlist } = useWishlist();
 
-  const handleLikeToggle = (bookId: string) => {
-    removeFromWishlist(bookId);
-  };
+  const handleLikeToggle = useCallback(
+    (bookId: string) => {
+      removeFromWishlist(bookId);
+    },
+    [removeFromWishlist]
+  );
 
   // 찜한 책 목록 렌더링
   return (
@@ -27,16 +31,19 @@ const WishList = () => {
         isLoading={isLoading}
         error={null}
         hasMore={false}
-        onLoadMore={() => {}}
-        onLikeToggle={bookId => {
-          const book = likedBooks.find(b => b.id === bookId);
-          if (book) {
-            handleLikeToggle(book.id);
-          }
-        }}
+        onLoadMore={useCallback(() => {}, [])}
+        onLikeToggle={useCallback(
+          (bookId: string) => {
+            const book = likedBooks.find(b => b.id === bookId);
+            if (book) {
+              handleLikeToggle(book.id);
+            }
+          },
+          [likedBooks, handleLikeToggle]
+        )}
       />
     </div>
   );
 };
 
-export default WishList;
+export default memo(WishList);

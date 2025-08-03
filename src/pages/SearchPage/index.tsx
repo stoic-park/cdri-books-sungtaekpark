@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useCallback, useMemo, memo } from 'react';
 import { useSearchStore } from '../../shared/store/useSearchStore';
 import {
   useSearchBooks,
@@ -35,9 +35,12 @@ const SearchBook = () => {
 
   const { toggleLike, isLiked } = useWishlist();
 
-  const handleLikeToggle = (book: Book) => {
-    toggleLike(book);
-  };
+  const handleLikeToggle = useCallback(
+    (book: Book) => {
+      toggleLike(book);
+    },
+    [toggleLike]
+  );
 
   // 현재 활성화된 검색 모드에 따라 데이터 선택
   const isAdvancedSearchMode = advancedSearchConditions.length > 0;
@@ -54,30 +57,46 @@ const SearchBook = () => {
     ? isFetchingNextAdvancedSearchPage
     : isFetchingNextSearchPage;
 
-  // 모든 페이지의 도서 데이터를 평면화하고 좋아요 상태 추가
-  const allBooks = currentData?.pages.flatMap(page => page.books) || [];
-  const booksWithLikeStatus = allBooks.map(book => ({
-    ...book,
-    isLiked: isLiked(book.id),
-  }));
+  const allBooks = useMemo(
+    () => currentData?.pages.flatMap(page => page.books) || [],
+    [currentData?.pages]
+  );
+
+  const booksWithLikeStatus = useMemo(
+    () =>
+      allBooks.map(book => ({
+        ...book,
+        isLiked: isLiked(book.id),
+      })),
+    [allBooks, isLiked]
+  );
 
   // 전체 결과 수 계산
-  const totalResults = currentData?.pages[0]?.total || 0;
+  const totalResults = useMemo(
+    () => currentData?.pages[0]?.total || 0,
+    [currentData?.pages]
+  );
 
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (keyword.trim()) {
-      setSearchKeyword(keyword);
-      setAdvancedSearchConditions([]);
-    }
-  };
+  const handleSearch = useCallback(
+    (e: React.FormEvent) => {
+      e.preventDefault();
+      if (keyword.trim()) {
+        setSearchKeyword(keyword);
+        setAdvancedSearchConditions([]);
+      }
+    },
+    [keyword]
+  );
 
-  const handleAdvancedSearch = (conditions: SearchCondition[]) => {
-    setAdvancedSearchConditions(conditions);
-    // 상세검색 시 전체 검색어 초기화
-    setKeyword('');
-    setSearchKeyword('');
-  };
+  const handleAdvancedSearch = useCallback(
+    (conditions: SearchCondition[]) => {
+      setAdvancedSearchConditions(conditions);
+      // 상세검색 시 전체 검색어 초기화
+      setKeyword('');
+      setSearchKeyword('');
+    },
+    [setKeyword]
+  );
 
   return (
     <div className="flex flex-col gap-lg">
@@ -104,16 +123,19 @@ const SearchBook = () => {
           error={currentError}
           hasMore={currentHasNextPage || false}
           onLoadMore={currentFetchNextPage}
-          onLikeToggle={bookId => {
-            const book = allBooks.find(b => b.id === bookId);
-            if (book) {
-              handleLikeToggle(book);
-            }
-          }}
+          onLikeToggle={useCallback(
+            (bookId: string) => {
+              const book = allBooks.find(b => b.id === bookId);
+              if (book) {
+                handleLikeToggle(book);
+              }
+            },
+            [allBooks, handleLikeToggle]
+          )}
         />
       </div>
     </div>
   );
 };
 
-export default SearchBook;
+export default memo(SearchBook);
