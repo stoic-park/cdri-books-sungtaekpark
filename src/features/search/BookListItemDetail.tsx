@@ -109,8 +109,9 @@ const BookListItemDetail = ({
       </div>
 
       {/* 오른쪽 영역: 상세보기 버튼, 가격 정보, 구매하기 버튼 */}
-      <div className="flex flex-col items-end gap-sm justify-between py-1.5">
+      <div className="flex flex-col items-end justify-between py-2 w-[240px]">
         {/* 상세보기 버튼 (상단) */}
+
         <Button
           variant="secondary"
           onClick={handleViewDetail}

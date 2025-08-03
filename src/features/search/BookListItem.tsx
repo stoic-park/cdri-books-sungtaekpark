@@ -85,13 +85,14 @@ const BookListItem = ({
       </div>
 
       {/* 액션 버튼들 */}
-      <div className="flex gap-2">
+      <div className="flex gap-2 w-[240px]">
         <Button
           variant={book.url ? 'primary' : 'secondary'}
           onClick={handlePurchase}
           disabled={!book.url}
           aria-label={book.url ? `${book.title} 구매하기` : '구매 링크 없음'}
           size="lg"
+          className="flex-1"
         >
           구매하기
         </Button>

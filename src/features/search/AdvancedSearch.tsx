@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import { Button } from '../../shared/components';
 import type { SearchCondition } from '../../shared/types/search';
 import SearchConditionComponent from './SearchCondition';
 
@@ -12,12 +13,33 @@ const AdvancedSearch = ({ isOpen, onClose, onSearch }: AdvancedSearchProps) => {
   const [conditions, setConditions] = useState<SearchCondition[]>([
     { field: 'title', value: '' },
   ]);
+  const modalRef = useRef<HTMLDivElement>(null);
 
   // 팝업이 열릴 때마다 조건 초기화
   useEffect(() => {
     if (isOpen) {
       setConditions([{ field: 'title', value: '' }]);
     }
+  }, [isOpen]);
+
+  // 외부 클릭 감지
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        modalRef.current &&
+        !modalRef.current.contains(event.target as Node)
+      ) {
+        handleClose();
+      }
+    };
+
+    if (isOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
   }, [isOpen]);
 
   const handleConditionChange = (index: number, condition: SearchCondition) => {
@@ -44,29 +66,25 @@ const AdvancedSearch = ({ isOpen, onClose, onSearch }: AdvancedSearchProps) => {
   if (!isOpen) return null;
 
   return (
-    <div className="absolute top-full right-0 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg z-10">
+    <div
+      ref={modalRef}
+      className="absolute top-full right-0 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg z-10 p-2"
+    >
       {/* 헤더 */}
       <div className="flex items-center justify-end w-full">
-        <button
+        <Button
           type="button"
+          variant="ghost"
           onClick={handleClose}
-          className="p-2 text-gray-400 hover:text-gray-600 transition-colors"
+          className="p-2 text-gray-400 hover:text-gray-600"
           aria-label="상세검색 닫기"
         >
-          <svg
+          <img
+            src="src/assets/icons/close.svg"
+            alt="close"
             className="w-6 h-6"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M6 18L18 6M6 6l12 12"
-            />
-          </svg>
-        </button>
+          />
+        </Button>
       </div>
 
       {/* 검색 조건들 */}
@@ -84,13 +102,14 @@ const AdvancedSearch = ({ isOpen, onClose, onSearch }: AdvancedSearchProps) => {
 
       {/* 하단 버튼 */}
       <div className="flex items-center gap-3 px-6 py-4 w-full">
-        <button
+        <Button
           type="button"
+          variant="primary"
           onClick={handleSearch}
-          className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors w-full"
+          fullWidth
         >
           검색하기
-        </button>
+        </Button>
       </div>
     </div>
   );

@@ -38,7 +38,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     const sizeClasses = {
       sm: 'px-3 py-4 text-sm',
       md: 'px-4 py-4 text-sm',
-      lg: 'px-6 py-4 text-base',
+      lg: 'px-4 py-4 text-base',
     };
 
     const widthClasses = fullWidth ? 'w-full' : '';
@@ -63,7 +63,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         {leftIcon && <span className="flex-shrink-0">{leftIcon}</span>}
         {typeof children === 'string' ? (
           <Typography
-            variant="body1"
+            variant="caption"
             color={variant === 'primary' ? 'white' : 'text-secondary'}
           >
             {children}
